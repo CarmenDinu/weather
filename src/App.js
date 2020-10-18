@@ -26,10 +26,21 @@ function DisplayWeather() {
 				return response.json();
 			})
 			.then((data) => {
-				console.log(data);
-				setWeather(
-					'Temperature for is ' + data.response.ob.tempC + ' Humidity is ' + data.response.ob.humidity
-				);
+				if (data.response.ob.tempC > 18) {
+					setWeather(
+						'Tshirt time :) Temperature is ' +
+							data.response.ob.tempC +
+							' and Humidity is ' +
+							data.response.ob.humidity
+					);
+				} else {
+					setWeather(
+						'Get a sweater :( Temperature is ' +
+							data.response.ob.tempC +
+							' and Humidity is ' +
+							data.response.ob.humidity
+					);
+				}
 			})
 			.catch((e) => {
 				console.log(e);

@@ -28,7 +28,7 @@ function DisplayWeather() {
 			.then((data) => {
 				if (data.response.ob.tempC > 18) {
 					setWeather(
-						'Tshirt time :) Temperature is ' +
+						'T-shirt time :) Temperature is ' +
 							data.response.ob.tempC +
 							' and Humidity is ' +
 							data.response.ob.humidity

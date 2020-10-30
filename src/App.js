@@ -20,7 +20,7 @@ function DisplayWeather() {
 		fetch(
 			'https://api.aerisapi.com/observations/' +
 				item.name +
-				'?&format=json&filter=allstations&limit=1&client_id=Jg6oIJCPb2juVL8jgaYjE&client_secret=3nnrzN1rXcemTDdsEjP0F6XN97J4WRrct8chBZhv'
+				'?&format=json&filter=allstations&limit=1&client_id=hB5dydTxB9pgoW2ijDe1U&client_secret=k9fecy267pFMVI2STE6BJnR0MtYgHeyvDFSZrd25'
 		)
 			.then((response) => {
 				return response.json();

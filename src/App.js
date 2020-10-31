@@ -50,7 +50,7 @@ function DisplayWeather() {
 	return (
 		<div className="App">
 			<header className="App-header" style={{ background: 'lightgray' }}>
-				<h4>This app returns the temperature and the humidity for a list of cities.</h4>
+				<h4>This app returns the temperature and the humidity for a list of predefined cities.</h4>
 				<div style={{ width: '400px' }}>
 					<ReactSearchAutocomplete
 						placeholder="Choose the city - Enter a letter here"

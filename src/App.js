@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import './App.css';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 
@@ -14,13 +14,14 @@ function DisplayWeather() {
 		{ id: 'Sweden', name: 'Stockholm,se' },
 		{ id: 'Thailand ', name: 'Bangkok,th' },
 	];
+	
 
 	const displayCityWeather = (item) => {
 		console.log(item);
 		fetch(
 			'https://api.aerisapi.com/observations/' +
 				item.name +
-				'?&format=json&filter=allstations&limit=1&client_id=hB5dydTxB9pgoW2ijDe1U&client_secret=k9fecy267pFMVI2STE6BJnR0MtYgHeyvDFSZrd25'
+				'?&format=json&filter=allstations&limit=1&client_id=Y5vJ4ZhzToZEO4fLJbyPE&client_secret=dyvwayjuL1sW1RtI7agOzRq7DGzqhCTHd5NDvdtU'
 		)
 			.then((response) => {
 				return response.json();
@@ -56,7 +57,7 @@ function DisplayWeather() {
 						placeholder="Choose the city - Enter a letter here"
 						items={items}
 						onSelect={displayCityWeather}
-						onChange={(location) => {
+						onChange={location => {
 							return setLocation(location.displayCityWeather);
 						}}
 					></ReactSearchAutocomplete>

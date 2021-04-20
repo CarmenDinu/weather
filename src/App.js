@@ -1,72 +1,98 @@
-import React, { useState , useEffect} from 'react';
-import './App.css';
-import { ReactSearchAutocomplete } from 'react-search-autocomplete';
+import React, { useState } from "react";
 
-function DisplayWeather() {
-	const [weather, setWeather] = useState('');
-	const [location, setLocation] = useState('');
-	let items = [
-		{ id: 'Romania', name: 'Bucharest,ro' },
-		{ id: 'Greece', name: 'Mykonos,gr' },
-		{ id: 'France', name: 'Paris,fr' },
-		{ id: 'Italy', name: 'Milan,it' },
-		{ id: 'Spain', name: 'Madrid,es' },
-		{ id: 'Sweden', name: 'Stockholm,se' },
-		{ id: 'Thailand ', name: 'Bangkok,th' },
-	];
-	
+const api = {
+  key: "a65240ced84f1f3aa3904bad6cef719e",
+  base: "https://api.openweathermap.org/data/2.5/",
+};
 
-	const displayCityWeather = (item) => {
-		console.log(item);
-		fetch(
-			'https://api.aerisapi.com/observations/' +
-				item.name +
-				'?&format=json&filter=allstations&limit=1&client_id=Y5vJ4ZhzToZEO4fLJbyPE&client_secret=dyvwayjuL1sW1RtI7agOzRq7DGzqhCTHd5NDvdtU'
-		)
-			.then((response) => {
-				return response.json();
-			})
-			.then((data) => {
-				if (data.response.ob.tempC > 18) {
-					setWeather(
-						'T-shirt time :) Temperature is ' +
-							data.response.ob.tempC +
-							' and Humidity is ' +
-							data.response.ob.humidity
-					);
-				} else {
-					setWeather(
-						'Get a sweater :( Temperature is ' +
-							data.response.ob.tempC +
-							' and Humidity is ' +
-							data.response.ob.humidity
-					);
-				}
-			})
-			.catch((e) => {
-				console.log(e);
-			});
-	};
+function App() {
+  const [query, setQuery] = useState("");
+  const [weather, setWeather] = useState({});
 
-	return (
-		<div className="App">
-			<header className="App-header" style={{ background: 'lightgray' }}>
-				<h4>This app returns the temperature and the humidity for a list of cities.</h4>
-				<div style={{ width: '400px' }}>
-					<ReactSearchAutocomplete
-						placeholder="Choose the city - Enter a letter here"
-						items={items}
-						onSelect={displayCityWeather}
-						onChange={location => {
-							return setLocation(location.displayCityWeather);
-						}}
-					></ReactSearchAutocomplete>
-				</div>
-				<div style={{ height: '100px' }}></div>
-				<p>{weather}</p>
-			</header>
-		</div>
-	);
+  const search = (evt) => {
+    if (evt.key === "Enter") {
+      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+        .then((res) => res.json())
+        .then((result) => {
+          setWeather(result);
+          setQuery("");
+          console.log(result);
+        });
+    }
+  };
+
+  const dateBuilder = (d) => {
+    let months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    let days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    let day = days[d.getDay()];
+    let date = d.getDate();
+    let month = months[d.getMonth()];
+    let year = d.getFullYear();
+
+    return `${day} ${date} ${month} ${year}`;
+  };
+
+  return (
+    <div
+      className={
+        typeof weather.main != "undefined"
+          ? weather.main.temp > 16
+            ? "app warm"
+            : "app"
+          : "app"
+      }
+    >
+      <main>
+        <div className="search-box">
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search..."
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
+            onKeyPress={search}
+          />
+        </div>
+        {typeof weather.main != "undefined" ? (
+          <div>
+            <div className="location-box">
+              <div className="location">
+                {weather.name}, {weather.sys.country}
+              </div>
+              <div className="date">{dateBuilder(new Date())}</div>
+            </div>
+            <div className="weather-box">
+              <div className="temp">{Math.round(weather.main.temp)}°c</div>
+              <div className="weather">{weather.weather[0].main}</div>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
+      </main>
+    </div>
+  );
 }
-
-export default DisplayWeather;
+export default App;
